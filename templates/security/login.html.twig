@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Iniciar Sesión
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/login.css') }}">
+{% endblock %}
+
+{% block body %}
+	<div class="login-container">
+		<div class="login-box">
+			<h1>Acceso a la prueba</h1>
+
+			{% if error %}
+				<div class="alert alert-error">
+					{{ error.messageKey|trans(error.messageData, 'security') }}
+				</div>
+			{% endif %}
+
+			<form method="post" action="{{ path('app_login') }}">
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" id="email" name="_username" value="{{ last_username }}" required autofocus placeholder="cliente@ejemplo.com">
+				</div>
+
+				<div class="form-group">
+					<label for="password">Contraseña</label>
+					<input type="password" id="password" name="_password" required placeholder="••••••••">
+				</div>
+
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+				<button type="submit" class="btn-login">Iniciar Sesión</button>
+			</form>
+
+			<div class="demo-credentials">
+				<p>
+					<strong>Credenciales de prueba:</strong>
+				</p>
+				<p>Email:
+					<code>cliente@widi.com</code>
+				</p>
+				<p>Password:
+					<code>password123</code>
+				</p>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,10 +1,24 @@
-import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
+/**
+ * Display and hide further details in the products listed
+ * @param {number} position - The position identifier of the product
  */
-import './styles/app.css';
+function toggleDetails(position) {
+    const detailsElement = document.getElementById(`details-${position}`);
+    const button = document.querySelector(`[data-position="${position}"] .btn-toggle`);
+    const toggleText = button.querySelector('.toggle-text');
+    const chevron = button.querySelector('.chevron');
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+    if (detailsElement.classList.contains('show')) {
+        detailsElement.classList.remove('show');
+        toggleText.textContent = 'Mostrar más';
+        chevron.textContent = '⌄';
+        chevron.classList.remove('chevron-up');
+        chevron.classList.add('chevron-down');
+    } else {
+        detailsElement.classList.add('show');
+        toggleText.textContent = 'Mostrar menos';
+        chevron.textContent = '⌃';
+        chevron.classList.remove('chevron-down');
+        chevron.classList.add('chevron-up');
+    }
+}

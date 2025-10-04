@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container">
+		<header class="header">
+			<h1>Las 10 Mejores Barras De Sonido En España</h1>
+			<div class="header-right">
+				<span class="user-email">{{ app.user.email }}</span>
+				<a href="{{ path('app_logout') }}" class="btn-logout">Cerrar Sesión</a>
+			</div>
+		</header>
+
+		<div class="disclaimer">
+			Declaración de divulgación publicitaria
+		</div>
+
+		<div class="table-header">
+			<div class="col-product">Producto</div>
+			<div class="col-rating">Nuestra Puntuación</div>
+			<div class="col-features">Características Clave</div>
+			<div class="col-buy"></div>
+		</div>
+
+		<div class="products-list">
+			{% for product in products %}
+				<div class="product-card" data-position="{{ product.position }}">
+					<div class="product-main">
+						<div class="col-product">
+							{% if product.position == 1 %}
+								<div class="badge badge-best">
+									#1 MEJOR OPCIÓN 2024
+								</div>
+							{% elseif product.position == 3 %}
+								<div class="badge badge-value">
+									#3 MEJOR VALOR 2024
+								</div>
+							{% else %}
+								<div class="product-number">#{{ product.position }}</div>
+							{% endif %}
+
+							<div class="product-image">
+								<img src="{{ product.imageUrl }}" alt="{{ product.title }}" onerror="this.src='{{ asset('images/soundbar-1.webp') }}'">
+							</div>
+						</div>
+
+						<div class="col-rating">
+							<div class="rating-score">{{ product.rating }}</div>
+							<div class="rating-stars">
+								{% set fullStars = product.stars|round(0, 'floor') %}
+								{% set emptyStars = 5 - fullStars %}
+
+								{% for i in 1..fullStars %}
+									<span class="star star-full">★</span>
+								{% endfor %}
+
+								{% if emptyStars > 0 %}
+									{% for i in 1..emptyStars %}
+										<span class="star star-empty">★</span>
+									{% endfor %}
+								{% endif %}
+							</div>
+							<div class="rating-label">"{{ product.ratingLabel }}"</div>
+						</div>
+
+						<div class="col-features">
+							<div class="product-title">
+								{{ product.title }}
+							</div>
+							<div class="product-brand">{{ product.brand|upper }}</div>
+
+							<div class="product-badges">
+								{% if product.discount %}
+									<span class="discount-badge">{{ product.discount }}% Descuento</span>
+								{% endif %}
+								{% if product.freeShipping %}
+									<span class="shipping-badge">Envío gratis</span>
+								{% endif %}
+							</div>
+
+							<button class="btn-toggle" id="toggle-{{ product.position }}" onclick="toggleDetails({{ product.position }})">
+								<span class="toggle-text">Mostrar más</span>
+								<span class="chevron chevron-down">⌄</span>
+							</button>
+						</div>
+
+						<div class="col-buy">
+							<a href="{{ product.productUrl }}" target="_blank" class="btn-buy">
+								Comprar ahora »
+							</a>
+							<img src="{{ asset('icons/amazon-logo.svg') }}" alt="Amazon" class="amazon-logo">
+						</div>
+					</div>
+
+					<div class="product-details" id="details-{{ product.position }}">
+						{% if product.features|length > 0 %}
+							<ul class="features-list">
+								{% for feature in product.features %}
+									<li>{{ feature }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+
+						<div class="btn-buy-container-bottom">
+							<img src="{{ asset('icons/amazon-logo.svg') }}" alt="Amazon" class="amazon-logo">
+							<a href="{{ product.productUrl }}" target="_blank" class="btn-buy">
+								Comprar ahora »
+							</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
